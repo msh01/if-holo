@@ -9,6 +9,73 @@ import type { Group } from "three";
 import * as THREE from "three";
 import type { Specimen } from "@/data/specimens";
 
+function HoloCat({ colors, specimen }: { colors: THREE.Color[]; specimen: Specimen }) {
+  const distortion = specimen.hologram?.distortion ?? 0.32;
+
+  return (
+    <group position={[0, -0.18, 0]} scale={0.78}>
+      <mesh position={[0, 0.15, 0]} scale={[0.86, 1.02, 0.42]}>
+        <sphereGeometry args={[1, 72, 72]} />
+        <MeshDistortMaterial
+          color={specimen.palette[0]}
+          distort={distortion}
+          emissive={colors[1]}
+          emissiveIntensity={1.75}
+          opacity={0.68}
+          speed={2.8}
+          transparent
+          wireframe
+        />
+      </mesh>
+      <mesh position={[0, 1.06, 0.02]} scale={[0.68, 0.58, 0.36]}>
+        <sphereGeometry args={[1, 72, 72]} />
+        <MeshDistortMaterial
+          color={specimen.palette[0]}
+          distort={distortion * 0.72}
+          emissive={colors[2]}
+          emissiveIntensity={1.45}
+          opacity={0.74}
+          speed={2.2}
+          transparent
+          wireframe
+        />
+      </mesh>
+      <mesh position={[-0.36, 1.6, 0]} rotation={[0, 0, 0.34]} scale={[0.28, 0.48, 0.18]}>
+        <coneGeometry args={[1, 1.4, 4]} />
+        <meshBasicMaterial color={specimen.palette[1]} opacity={0.7} transparent wireframe />
+      </mesh>
+      <mesh position={[0.36, 1.6, 0]} rotation={[0, 0, -0.34]} scale={[0.28, 0.48, 0.18]}>
+        <coneGeometry args={[1, 1.4, 4]} />
+        <meshBasicMaterial color={specimen.palette[1]} opacity={0.7} transparent wireframe />
+      </mesh>
+      <mesh position={[0.18, 1.14, 0.34]} scale={[0.048, 0.048, 0.048]}>
+        <sphereGeometry args={[1, 24, 24]} />
+        <meshBasicMaterial color={specimen.palette[2]} />
+      </mesh>
+      <mesh position={[-0.18, 1.14, 0.34]} scale={[0.048, 0.048, 0.048]}>
+        <sphereGeometry args={[1, 24, 24]} />
+        <meshBasicMaterial color={specimen.palette[2]} />
+      </mesh>
+      {[-0.24, 0, 0.24].map((offset) => (
+        <group key={offset} position={[0, 0.98 + offset * 0.18, 0.38]}>
+          <mesh position={[-0.52, offset, 0]} rotation={[0, 0, 1.38]} scale={[0.012, 0.64, 0.012]}>
+            <cylinderGeometry args={[1, 1, 1, 8]} />
+            <meshBasicMaterial color={specimen.palette[2]} opacity={0.55} transparent />
+          </mesh>
+          <mesh position={[0.52, offset, 0]} rotation={[0, 0, -1.38]} scale={[0.012, 0.64, 0.012]}>
+            <cylinderGeometry args={[1, 1, 1, 8]} />
+            <meshBasicMaterial color={specimen.palette[2]} opacity={0.55} transparent />
+          </mesh>
+        </group>
+      ))}
+      <mesh position={[0.72, 0.18, -0.05]} rotation={[0.28, 0.18, -0.5]} scale={[0.62, 0.62, 0.14]}>
+        <torusGeometry args={[0.78, 0.075, 12, 80, Math.PI * 1.35]} />
+        <meshBasicMaterial color={specimen.palette[1]} opacity={0.68} transparent wireframe />
+      </mesh>
+    </group>
+  );
+}
+
 function HoloAvatar({ specimen }: { specimen: Specimen }) {
   const groupRef = useRef<Group>(null);
   const colors = useMemo(
@@ -18,35 +85,44 @@ function HoloAvatar({ specimen }: { specimen: Specimen }) {
 
   useFrame(({ clock, pointer }) => {
     if (!groupRef.current) return;
+    const motion = specimen.hologram?.idleMotion;
+    const pounce = motion === "pounce" ? Math.max(0, Math.sin(clock.elapsedTime * 1.7)) * 0.05 : 0;
     groupRef.current.rotation.y = Math.sin(clock.elapsedTime * 0.55) * 0.34 + pointer.x * 0.2;
     groupRef.current.rotation.x = pointer.y * 0.08;
-    groupRef.current.position.y = Math.sin(clock.elapsedTime * 1.2) * 0.08;
+    groupRef.current.position.y = Math.sin(clock.elapsedTime * 1.2) * 0.08 + pounce;
   });
 
   const isRelief = specimen.modelMode === "relief";
+  const isCat = specimen.hologram?.silhouette === "cat";
 
   return (
     <group ref={groupRef}>
       <Float floatIntensity={0.8} rotationIntensity={0.35} speed={1.8}>
-        <mesh position={[0, 0.28, 0]} scale={isRelief ? [1.25, 1.72, 0.22] : [1.05, 1.45, 1.05]}>
-          {isRelief ? <sphereGeometry args={[1, 96, 96]} /> : <icosahedronGeometry args={[1, 5]} />}
-          <MeshDistortMaterial
-            color={specimen.palette[0]}
-            distort={isRelief ? 0.42 : 0.24}
-            emissive={colors[1]}
-            emissiveIntensity={1.6}
-            metalness={0.25}
-            opacity={0.78}
-            roughness={0.18}
-            speed={2.4}
-            transparent
-            wireframe={!isRelief}
-          />
-        </mesh>
-        <mesh position={[0, 0.25, -0.06]} scale={[1.38, 1.86, 0.04]}>
-          <sphereGeometry args={[1, 64, 64]} />
-          <meshBasicMaterial color={specimen.palette[1]} opacity={0.13} transparent wireframe />
-        </mesh>
+        {isCat ? (
+          <HoloCat colors={colors} specimen={specimen} />
+        ) : (
+          <>
+            <mesh position={[0, 0.28, 0]} scale={isRelief ? [1.25, 1.72, 0.22] : [1.05, 1.45, 1.05]}>
+              {isRelief ? <sphereGeometry args={[1, 96, 96]} /> : <icosahedronGeometry args={[1, 5]} />}
+              <MeshDistortMaterial
+                color={specimen.palette[0]}
+                distort={isRelief ? 0.42 : 0.24}
+                emissive={colors[1]}
+                emissiveIntensity={1.6}
+                metalness={0.25}
+                opacity={0.78}
+                roughness={0.18}
+                speed={2.4}
+                transparent
+                wireframe={!isRelief}
+              />
+            </mesh>
+            <mesh position={[0, 0.25, -0.06]} scale={[1.38, 1.86, 0.04]}>
+              <sphereGeometry args={[1, 64, 64]} />
+              <meshBasicMaterial color={specimen.palette[1]} opacity={0.13} transparent wireframe />
+            </mesh>
+          </>
+        )}
       </Float>
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.2, 0]}>
@@ -57,7 +133,13 @@ function HoloAvatar({ specimen }: { specimen: Specimen }) {
         <circleGeometry args={[1.05, 96]} />
         <meshBasicMaterial color={specimen.palette[2]} opacity={0.08} transparent />
       </mesh>
-      <Sparkles color={specimen.palette[2]} count={90} scale={[4.2, 3.6, 2.2]} size={2.3} speed={0.65} />
+      <Sparkles
+        color={specimen.palette[2]}
+        count={specimen.hologram?.particleCount ?? 90}
+        scale={[4.2, 3.6, 2.2]}
+        size={2.3}
+        speed={0.65}
+      />
       <Text
         color={specimen.palette[2]}
         fontSize={0.09}
@@ -91,7 +173,7 @@ export function HologramStage({ specimen, compact = false }: { specimen: Specime
         <EffectComposer>
           <Bloom intensity={1.45} luminanceThreshold={0.1} mipmapBlur />
           <ChromaticAberration blendFunction={BlendFunction.SCREEN} offset={[0.0012, 0.0018]} />
-          <Scanline blendFunction={BlendFunction.OVERLAY} density={1.25} opacity={0.22} />
+          <Scanline blendFunction={BlendFunction.OVERLAY} density={specimen.hologram?.scanlineDensity ?? 1.25} opacity={0.22} />
           <Noise blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.17} />
         </EffectComposer>
       </Canvas>

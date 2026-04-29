@@ -1,4 +1,13 @@
 export type SpecimenIconName = "cat" | "sparkles" | "crown" | "gamepad" | "moon" | "flame";
+export type HologramConfig = {
+  silhouette: "cat" | "humanoid" | "orb";
+  projectorRing: "soft" | "arc" | "pulse";
+  scanlineDensity: number;
+  particleCount: number;
+  distortion: number;
+  idleMotion: "pounce" | "float" | "guard";
+};
+
 export type Specimen = {
   id: string;
   title: string;
@@ -12,6 +21,7 @@ export type Specimen = {
   lore: string;
   modelMode: "relief" | "asset";
   iconName: SpecimenIconName;
+  hologram?: HologramConfig;
 };
 
 export const specimens: Specimen[] = [
@@ -28,6 +38,14 @@ export const specimens: Specimen[] = [
     lore: "从深夜弹幕里凝结出来的小型守护灵，会把路过的光点当成玩具扑过去。",
     modelMode: "relief",
     iconName: "cat",
+    hologram: {
+      silhouette: "cat",
+      projectorRing: "pulse",
+      scanlineDensity: 1.65,
+      particleCount: 140,
+      distortion: 0.38,
+      idleMotion: "pounce",
+    },
   },
   {
     id: "void-idol",

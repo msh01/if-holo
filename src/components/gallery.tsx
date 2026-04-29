@@ -60,10 +60,13 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
       <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
         {specimens.map((specimen, index) => {
           return (
-            <article
+            <Link
               data-holo-card
               key={specimen.id}
-              className={`group relative mb-4 break-inside-avoid overflow-hidden rounded-md border border-white/10 bg-white/[0.045] p-3 shadow-2xl shadow-black/40 backdrop-blur ${specimen.height}`}
+              aria-label={`进入${specimen.title}全息舱`}
+              className={`group relative mb-4 block break-inside-avoid overflow-hidden rounded-md border border-white/10 bg-white/[0.045] p-3 text-current no-underline shadow-2xl shadow-black/40 backdrop-blur ${specimen.height}`}
+              href={`/holo/${specimen.id}`}
+              onPointerDown={() => playPing(index + 3)}
               onPointerEnter={() => playPing(index)}
               style={{
                 background: `linear-gradient(155deg, ${specimen.palette[0]}1f, rgba(255,255,255,0.045) 32%, ${specimen.palette[1]}18), #08090b`,
@@ -101,17 +104,15 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
                     size="sm"
                     value={specimen.signal}
                   />
-                  <Link
+                  <div
                     className="flex h-10 w-full items-center justify-between rounded-md bg-white px-4 text-sm font-medium text-black transition hover:bg-white/85"
-                    href={`/holo/${specimen.id}`}
-                    onPointerDown={() => playPing(index + 3)}
                   >
                     <span>进入全息舱</span>
                     <ArrowUpRight className="h-4 w-4" />
-                  </Link>
+                  </div>
                 </div>
               </div>
-            </article>
+            </Link>
           );
         })}
       </div>
