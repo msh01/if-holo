@@ -39,8 +39,13 @@ export const specimens: Specimen[] = [
     palette: ["#00f5ff", "#ff4fd8", "#ffe66d"],
     signal: 96,
     lore: "从深夜弹幕里凝结出来的小型守护灵，会把路过的光点当成玩具扑过去。",
-    modelUrl: DEFAULT_GLB_MODEL,
+    modelUrl: "/models/neon-cat-real.glb",
     iconName: "cat",
+    credit: {
+      source: "Poly Pizza / Cat by Poly by Google",
+      license: "CC BY 3.0",
+      url: "https://poly.pizza/m/6dM1J6f6pm9",
+    },
     hologram: {
       projectorRing: "pulse",
       scanlineDensity: 1.65,

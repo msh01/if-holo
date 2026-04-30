@@ -362,6 +362,76 @@ function WarehouseAssetDisplay({ specimen }: { specimen: Specimen }) {
   return <GlbAvatar specimen={specimen} />;
 }
 
+function NeonCatDisplay({ specimen }: { specimen: Specimen }) {
+  const groupRef = useRef<Group>(null);
+
+  useFrame(({ clock, pointer }) => {
+    if (!groupRef.current) return;
+    groupRef.current.rotation.y = Math.sin(clock.elapsedTime * 0.42) * 0.16 + pointer.x * 0.14;
+    groupRef.current.rotation.x = pointer.y * 0.05;
+    groupRef.current.position.y = Math.sin(clock.elapsedTime * 0.9) * 0.035;
+  });
+
+  return (
+    <group ref={groupRef} position={[0, -0.16, 0]} scale={1.1}>
+      <mesh position={[0, -0.1, 0]} scale={[0.72, 1.05, 0.5]}>
+        <sphereGeometry args={[0.74, 18, 12]} />
+        <meshStandardMaterial color="#263241" emissive={specimen.palette[0]} emissiveIntensity={0.34} roughness={0.42} metalness={0.08} />
+      </mesh>
+
+      <mesh position={[0, 0.88, 0.08]} scale={[0.68, 0.58, 0.5]}>
+        <sphereGeometry args={[0.55, 18, 12]} />
+        <meshStandardMaterial color="#2d3848" emissive={specimen.palette[0]} emissiveIntensity={0.42} roughness={0.36} metalness={0.08} />
+      </mesh>
+
+      {[-0.28, 0.28].map((x) => (
+        <mesh key={`ear-${x}`} position={[x, 1.34, 0.08]} rotation={[0, 0, x < 0 ? 0.22 : -0.22]}>
+          <coneGeometry args={[0.18, 0.46, 3]} />
+          <meshStandardMaterial color="#202938" emissive={specimen.palette[1]} emissiveIntensity={0.38} roughness={0.35} />
+        </mesh>
+      ))}
+
+      {[-0.16, 0.16].map((x) => (
+        <mesh key={`eye-${x}`} position={[x, 0.92, 0.54]} scale={[1.18, 0.72, 0.28]}>
+          <sphereGeometry args={[0.055, 16, 8]} />
+          <meshStandardMaterial color="#fff7a8" emissive={specimen.palette[2]} emissiveIntensity={2.4} toneMapped={false} />
+        </mesh>
+      ))}
+
+      <mesh position={[0, 0.77, 0.57]} rotation={[Math.PI / 2, 0, Math.PI]}>
+        <coneGeometry args={[0.055, 0.095, 3]} />
+        <meshStandardMaterial color="#ff6bd6" emissive={specimen.palette[1]} emissiveIntensity={1.2} toneMapped={false} />
+      </mesh>
+
+      {[-1, 1].map((side) =>
+        [-0.02, 0.13, -0.17].map((y, index) => (
+          <mesh key={`whisker-${side}-${index}`} position={[side * 0.28, 0.76 + y, 0.58]} rotation={[0, 0, side * (0.15 + index * 0.11)]}>
+            <boxGeometry args={[0.42, 0.015, 0.015]} />
+            <meshBasicMaterial color="#d6f6ff" />
+          </mesh>
+        )),
+      )}
+
+      {[-0.24, 0.24].map((x) => (
+        <mesh key={`paw-${x}`} position={[x, -0.83, 0.42]} scale={[0.72, 0.3, 0.55]}>
+          <sphereGeometry args={[0.2, 14, 8]} />
+          <meshStandardMaterial color="#1f2937" emissive={specimen.palette[0]} emissiveIntensity={0.3} roughness={0.4} />
+        </mesh>
+      ))}
+
+      <mesh position={[-0.62, -0.02, -0.08]} rotation={[0.24, 0.2, -0.9]} scale={[0.36, 1.08, 0.36]}>
+        <torusGeometry args={[0.42, 0.07, 10, 42, Math.PI * 1.28]} />
+        <meshStandardMaterial color="#253244" emissive={specimen.palette[1]} emissiveIntensity={0.42} roughness={0.34} />
+      </mesh>
+
+      <mesh position={[0, -1.08, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.58, 1.18, 80]} />
+        <meshBasicMaterial color={specimen.palette[0]} opacity={0.22} transparent side={THREE.DoubleSide} />
+      </mesh>
+    </group>
+  );
+}
+
 function StageFallback({ specimen }: { specimen: Specimen }) {
   return (
     <group>
@@ -377,6 +447,7 @@ function StageFallback({ specimen }: { specimen: Specimen }) {
 export function HologramStage({ specimen, compact = false }: { specimen: Specimen; compact?: boolean }) {
   const isMechaPrincess = specimen.id === "mecha-princess";
   const isWarehouseAsset = specimen.id.startsWith("warehouse-");
+  const isNeonCat = specimen.id === "neon-cat";
 
   return (
     <div
@@ -393,12 +464,20 @@ export function HologramStage({ specimen, compact = false }: { specimen: Specime
         gl={{ antialias: true }}
       >
         <color attach="background" args={["#020203"]} />
-        <ambientLight intensity={isMechaPrincess || isWarehouseAsset ? 1.05 : 0.62} />
-        <directionalLight color="#ffffff" intensity={isMechaPrincess || isWarehouseAsset ? 3.4 : 2.1} position={[2.4, 3.2, 3.6]} />
-        <pointLight color={specimen.palette[0]} intensity={isMechaPrincess || isWarehouseAsset ? 24 : 42} position={[2.4, 2.4, 2.6]} />
-        <pointLight color={specimen.palette[1]} intensity={isMechaPrincess || isWarehouseAsset ? 18 : 26} position={[-2, -0.7, 2.2]} />
+        <ambientLight intensity={isMechaPrincess || isWarehouseAsset || isNeonCat ? 1.05 : 0.62} />
+        <directionalLight color="#ffffff" intensity={isMechaPrincess || isWarehouseAsset || isNeonCat ? 3.4 : 2.1} position={[2.4, 3.2, 3.6]} />
+        <pointLight color={specimen.palette[0]} intensity={isMechaPrincess || isWarehouseAsset || isNeonCat ? 24 : 42} position={[2.4, 2.4, 2.6]} />
+        <pointLight color={specimen.palette[1]} intensity={isMechaPrincess || isWarehouseAsset || isNeonCat ? 18 : 26} position={[-2, -0.7, 2.2]} />
         <Suspense fallback={<StageFallback specimen={specimen} />}>
-          {isMechaPrincess ? <MechaPrincessDisplay specimen={specimen} /> : isWarehouseAsset ? <WarehouseAssetDisplay specimen={specimen} /> : <GlbAvatar specimen={specimen} />}
+          {isMechaPrincess ? (
+            <MechaPrincessDisplay specimen={specimen} />
+          ) : isWarehouseAsset ? (
+            <WarehouseAssetDisplay specimen={specimen} />
+          ) : isNeonCat ? (
+            <NeonCatDisplay specimen={specimen} />
+          ) : (
+            <GlbAvatar specimen={specimen} />
+          )}
           <Environment preset="city" />
         </Suspense>
         <OrbitControls
@@ -427,6 +506,7 @@ export function HologramStage({ specimen, compact = false }: { specimen: Specime
 }
 
 useGLTF.preload("/models/if-holo-default.glb");
+useGLTF.preload("/models/neon-cat-real.glb");
 useGLTF.preload("/models/mecha-princess-clear.glb");
 useGLTF.preload("/models/warehouse-avocado.glb");
 useGLTF.preload("/models/warehouse-boombox.glb");
