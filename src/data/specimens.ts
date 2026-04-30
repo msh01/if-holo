@@ -1,10 +1,8 @@
 export type SpecimenIconName = "cat" | "sparkles" | "crown" | "gamepad" | "moon" | "flame";
 export type HologramConfig = {
-  silhouette: "cat" | "humanoid" | "orb";
   projectorRing: "soft" | "arc" | "pulse";
   scanlineDensity: number;
   particleCount: number;
-  distortion: number;
   idleMotion: "pounce" | "float" | "guard";
 };
 
@@ -16,13 +14,14 @@ export type Specimen = {
   rarity: string;
   mood: string;
   palette: [string, string, string];
-  height: string;
   signal: number;
   lore: string;
-  modelMode: "relief" | "asset";
+  modelUrl: string;
   iconName: SpecimenIconName;
   hologram?: HologramConfig;
 };
+
+const DEFAULT_GLB_MODEL = "/models/if-holo-default.glb";
 
 export const specimens: Specimen[] = [
   {
@@ -33,17 +32,14 @@ export const specimens: Specimen[] = [
     rarity: "SSR",
     mood: "调皮、黏人、带电",
     palette: ["#00f5ff", "#ff4fd8", "#ffe66d"],
-    height: "h-[340px]",
     signal: 96,
     lore: "从深夜弹幕里凝结出来的小型守护灵，会把路过的光点当成玩具扑过去。",
-    modelMode: "relief",
+    modelUrl: DEFAULT_GLB_MODEL,
     iconName: "cat",
     hologram: {
-      silhouette: "cat",
       projectorRing: "pulse",
       scanlineDensity: 1.65,
       particleCount: 140,
-      distortion: 0.38,
       idleMotion: "pounce",
     },
   },
@@ -55,10 +51,9 @@ export const specimens: Specimen[] = [
     rarity: "UR",
     mood: "冷艳、危险、会唱歌",
     palette: ["#9b5cff", "#00ffa3", "#ff2f6d"],
-    height: "h-[440px]",
     signal: 91,
     lore: "一次失败的线上演唱会留下的高维残影，只在低延迟网络里完整现身。",
-    modelMode: "asset",
+    modelUrl: DEFAULT_GLB_MODEL,
     iconName: "sparkles",
   },
   {
@@ -69,10 +64,9 @@ export const specimens: Specimen[] = [
     rarity: "SSR",
     mood: "优雅、强硬、火力足",
     palette: ["#ffb703", "#3a86ff", "#fb5607"],
-    height: "h-[390px]",
     signal: 88,
     lore: "王冠不是装饰，而是一个舰队级指挥核心，低头时会展开光学武装。",
-    modelMode: "asset",
+    modelUrl: DEFAULT_GLB_MODEL,
     iconName: "crown",
   },
   {
@@ -83,10 +77,9 @@ export const specimens: Specimen[] = [
     rarity: "SR",
     mood: "沉默、迅捷、像 Boss",
     palette: ["#06d6a0", "#118ab2", "#f72585"],
-    height: "h-[470px]",
     signal: 84,
     lore: "据说他的刀能切开防火墙，也能切开一段迟迟不肯结束的剧情线。",
-    modelMode: "relief",
+    modelUrl: DEFAULT_GLB_MODEL,
     iconName: "gamepad",
   },
   {
@@ -97,10 +90,9 @@ export const specimens: Specimen[] = [
     rarity: "SSR",
     mood: "克制、神秘、会改命",
     palette: ["#d6f6ff", "#7b2cbf", "#80ffdb"],
-    height: "h-[360px]",
     signal: 93,
     lore: "每翻动一页星历，展厅里的重力都会轻轻偏移半秒。",
-    modelMode: "relief",
+    modelUrl: DEFAULT_GLB_MODEL,
     iconName: "moon",
   },
   {
@@ -111,10 +103,9 @@ export const specimens: Specimen[] = [
     rarity: "UR",
     mood: "热烈、骄傲、不服输",
     palette: ["#ff006e", "#ffbe0b", "#38b000"],
-    height: "h-[420px]",
     signal: 89,
     lore: "她的每一次出招都会在空气里留下短暂燃烧的像素火纹。",
-    modelMode: "asset",
+    modelUrl: DEFAULT_GLB_MODEL,
     iconName: "flame",
   },
 ];

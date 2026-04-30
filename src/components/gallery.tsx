@@ -52,19 +52,19 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
             <span className="inline-flex items-center gap-1.5"><Radio className="h-3.5 w-3.5" /> 6 signals</span>
           </Chip>
           <Chip className="border-white/12 bg-white/8 text-white" variant="soft">
-            <span className="inline-flex items-center gap-1.5"><Boxes className="h-3.5 w-3.5" /> 2.5D / 3D</span>
+            <span className="inline-flex items-center gap-1.5"><Boxes className="h-3.5 w-3.5" /> GLB / 3D</span>
           </Chip>
         </div>
       </div>
 
-      <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {specimens.map((specimen, index) => {
           return (
             <Link
               data-holo-card
               key={specimen.id}
               aria-label={`进入${specimen.title}全息舱`}
-              className={`group relative mb-4 block break-inside-avoid overflow-hidden rounded-md border border-white/10 bg-white/[0.045] p-3 text-current no-underline shadow-2xl shadow-black/40 backdrop-blur ${specimen.height}`}
+              className="group relative flex h-[420px] overflow-hidden rounded-md border border-white/10 bg-white/[0.045] p-3 text-current no-underline shadow-2xl shadow-black/40 backdrop-blur"
               href={`/holo/${specimen.id}`}
               onPointerDown={() => playPing(index + 3)}
               onPointerEnter={() => playPing(index)}
@@ -84,7 +84,7 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
                   </Chip>
                 </div>
 
-                <div className="mt-5 flex-1 rounded-md border border-white/10 bg-black/30 p-4">
+                <div className="mt-5 h-[170px] rounded-md border border-white/10 bg-black/30 p-4">
                   <div className="relative h-full min-h-[150px] overflow-hidden rounded">
                     <div className="absolute inset-0" style={{ background: `radial-gradient(circle at 48% 42%, ${specimen.palette[0]}88, transparent 26%), radial-gradient(circle at 54% 58%, ${specimen.palette[1]}7a, transparent 34%), radial-gradient(circle at 42% 78%, ${specimen.palette[2]}66, transparent 26%)` }} />
                     <div className="absolute left-1/2 top-1/2 h-28 w-20 -translate-x-1/2 -translate-y-1/2 rounded-[45%] border border-white/25 bg-white/10 shadow-[0_0_42px_rgba(255,255,255,0.18)]" />
@@ -92,7 +92,7 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
                   </div>
                 </div>
 
-                <div className="mt-4 space-y-3">
+                <div className="mt-4 flex flex-1 flex-col space-y-3">
                   <div>
                     <p className="text-xs text-white/48">{specimen.tag}</p>
                     <h3 className="mt-1 text-xl font-semibold text-white">{specimen.title}</h3>
@@ -105,7 +105,7 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
                     value={specimen.signal}
                   />
                   <div
-                    className="flex h-10 w-full items-center justify-between rounded-md bg-white px-4 text-sm font-medium text-black transition hover:bg-white/85"
+                    className="mt-auto flex h-10 w-full items-center justify-between rounded-md bg-white px-4 text-sm font-medium text-black transition hover:bg-white/85"
                   >
                     <span>进入全息舱</span>
                     <ArrowUpRight className="h-4 w-4" />
@@ -118,9 +118,9 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
       </div>
 
       <div className="mt-10 grid gap-3 border-y border-white/10 py-5 text-sm text-white/54 md:grid-cols-3">
-        <div className="flex items-center gap-2"><BadgeCheck className="h-4 w-4 text-emerald-300" /> 当前原型支持程序化全息资产</div>
-        <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-fuchsia-300" /> 后续可接原图 + 深度图浮雕</div>
-        <div className="flex items-center gap-2"><Boxes className="h-4 w-4 text-cyan-300" /> 也可替换为 GLB/VRM 真实模型</div>
+        <div className="flex items-center gap-2"><BadgeCheck className="h-4 w-4 text-emerald-300" /> 当前原型统一使用 GLB 模型资产</div>
+        <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-fuchsia-300" /> 全息效果叠加在真实 3D 模型之上</div>
+        <div className="flex items-center gap-2"><Boxes className="h-4 w-4 text-cyan-300" /> 后续可替换为独立角色 GLB/VRM</div>
       </div>
     </section>
   );

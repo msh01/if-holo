@@ -66,9 +66,7 @@ export default async function HoloDetailPage({ params }: { params: Promise<{ id:
                 当前渲染路线
               </div>
               <p className="mt-2 text-sm leading-6 text-white/52">
-                {specimen.modelMode === "relief"
-                  ? "用程序化网格模拟原图 + 深度图的 2.5D 浮雕，可替换为 displacementMap 管线。"
-                  : "用程序化 3D 体块模拟真实资产，可替换为 GLB、VRM 或角色绑定模型。"}
+                当前展品通过 GLB 文件直接加载真实 3D 模型、材质和空间结构，再叠加全息扫描、辉光和粒子效果。
               </p>
             </div>
             <div className="rounded-md border border-white/10 bg-white/[0.045] p-4">
