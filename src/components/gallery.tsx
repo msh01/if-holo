@@ -49,7 +49,7 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
         </div>
         <div className="flex gap-2">
           <Chip className="border-white/12 bg-white/8 text-white" variant="soft">
-            <span className="inline-flex items-center gap-1.5"><Radio className="h-3.5 w-3.5" /> 6 signals</span>
+            <span className="inline-flex items-center gap-1.5"><Radio className="h-3.5 w-3.5" /> {specimens.length} signals</span>
           </Chip>
           <Chip className="border-white/12 bg-white/8 text-white" variant="soft">
             <span className="inline-flex items-center gap-1.5"><Boxes className="h-3.5 w-3.5" /> GLB / 3D</span>

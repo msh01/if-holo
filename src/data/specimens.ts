@@ -18,6 +18,11 @@ export type Specimen = {
   lore: string;
   modelUrl: string;
   iconName: SpecimenIconName;
+  credit?: {
+    source: string;
+    license: string;
+    url: string;
+  };
   hologram?: HologramConfig;
 };
 
@@ -66,8 +71,80 @@ export const specimens: Specimen[] = [
     palette: ["#ffb703", "#3a86ff", "#fb5607"],
     signal: 88,
     lore: "王冠不是装饰，而是一个舰队级指挥核心，低头时会展开光学武装。",
-    modelUrl: "/models/mecha-princess.glb",
+    modelUrl: "/models/mecha-princess-clear.glb",
     iconName: "crown",
+  },
+  {
+    id: "warehouse-avocado",
+    title: "冷库牛油果",
+    archetype: "Cold Storage Asset",
+    tag: "仓储 / 生鲜",
+    rarity: "R",
+    mood: "成熟、沉稳、可盘点",
+    palette: ["#9bdc28", "#4d7c0f", "#f8d66d"],
+    signal: 79,
+    lore: "从数字冷链货架里抽样入库的生鲜资产，表皮纹理比库存编号更诚实。",
+    modelUrl: "/models/warehouse-avocado.glb",
+    iconName: "moon",
+    credit: {
+      source: "Khronos glTF Sample Models / Avocado",
+      license: "CC0",
+      url: "https://github.com/KhronosGroup/glTF-Sample-Models/tree/main/2.0/Avocado",
+    },
+  },
+  {
+    id: "warehouse-boombox",
+    title: "复古音箱货格",
+    archetype: "Audio Inventory",
+    tag: "仓储 / 设备",
+    rarity: "SR",
+    mood: "复古、响亮、带库存噪声",
+    palette: ["#ff5d8f", "#fbbf24", "#38bdf8"],
+    signal: 86,
+    lore: "曾经属于模拟时代的便携音箱，如今被登记为高声压文化遗物。",
+    modelUrl: "/models/warehouse-boombox.glb",
+    iconName: "gamepad",
+    credit: {
+      source: "Khronos glTF Sample Models / Boom Box",
+      license: "CC0",
+      url: "https://github.com/KhronosGroup/glTF-Sample-Models/tree/main/2.0/BoomBox",
+    },
+  },
+  {
+    id: "warehouse-milk-truck",
+    title: "奶车调度单元",
+    archetype: "Fleet Inventory",
+    tag: "仓储 / 运输",
+    rarity: "SSR",
+    mood: "可靠、准点、会绕开拥堵",
+    palette: ["#60a5fa", "#f8fafc", "#f97316"],
+    signal: 82,
+    lore: "一台被数字仓管接管的配送车，路线、载重和温控都刻在模型层级里。",
+    modelUrl: "/models/warehouse-milk-truck.glb",
+    iconName: "sparkles",
+    credit: {
+      source: "Khronos glTF Sample Models / Cesium Milk Truck",
+      license: "CC BY 4.0",
+      url: "https://github.com/KhronosGroup/glTF-Sample-Models/tree/main/2.0/CesiumMilkTruck",
+    },
+  },
+  {
+    id: "warehouse-fox",
+    title: "巡仓低模狐",
+    archetype: "Patrol Mascot",
+    tag: "仓储 / 巡检",
+    rarity: "SR",
+    mood: "机敏、低多边形、跑得很快",
+    palette: ["#fb923c", "#fef3c7", "#22c55e"],
+    signal: 90,
+    lore: "它原本只是仓库巡检系统的吉祥物，后来学会了在货架阴影里自己巡逻。",
+    modelUrl: "/models/warehouse-fox.glb",
+    iconName: "flame",
+    credit: {
+      source: "Khronos glTF Sample Models / Fox",
+      license: "CC0 model, CC BY 4.0 rigging/animation",
+      url: "https://github.com/KhronosGroup/glTF-Sample-Models/tree/main/2.0/Fox",
+    },
   },
   {
     id: "blade-runner",

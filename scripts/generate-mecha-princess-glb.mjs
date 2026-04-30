@@ -18,7 +18,7 @@ if (typeof globalThis.FileReader === "undefined") {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const outputPath = path.resolve(__dirname, "../public/models/mecha-princess.glb");
+const outputPath = path.resolve(__dirname, "../public/models/mecha-princess-clear.glb");
 
 const scene = new THREE.Scene();
 scene.name = "IFHolo_MechaPrincess";

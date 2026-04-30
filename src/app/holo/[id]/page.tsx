@@ -1,5 +1,5 @@
 import { Chip } from "@heroui/react";
-import { ArrowLeft, Boxes, Layers3, Radio, Sparkles } from "lucide-react";
+import { ArrowLeft, Boxes, ExternalLink, Layers3, Radio, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { HologramStage } from "@/components/hologram-stage";
@@ -57,6 +57,17 @@ export default async function HoloDetailPage({ params }: { params: Promise<{ id:
 
             <p className="mt-8 text-lg leading-8 text-white/68">{specimen.lore}</p>
             <p className="mt-4 text-sm leading-7 text-white/48">状态：{specimen.mood}</p>
+            {specimen.credit ? (
+              <a
+                className="mt-5 inline-flex items-center gap-2 text-sm text-white/58 transition hover:text-white"
+                href={specimen.credit.url}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <ExternalLink className="h-4 w-4" />
+                {specimen.credit.source} / {specimen.credit.license}
+              </a>
+            ) : null}
           </div>
 
           <div className="grid gap-3">
