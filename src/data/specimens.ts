@@ -66,7 +66,7 @@ export const specimens: Specimen[] = [
     palette: ["#ffb703", "#3a86ff", "#fb5607"],
     signal: 88,
     lore: "王冠不是装饰，而是一个舰队级指挥核心，低头时会展开光学武装。",
-    modelUrl: DEFAULT_GLB_MODEL,
+    modelUrl: "/models/mecha-princess.glb",
     iconName: "crown",
   },
   {

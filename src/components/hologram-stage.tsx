@@ -40,6 +40,7 @@ function tintModelMaterials(root: Object3D, specimen: Specimen) {
 function GlbAvatar({ specimen }: { specimen: Specimen }) {
   const groupRef = useRef<Group>(null);
   const { scene } = useGLTF(specimen.modelUrl);
+  const isMechaPrincess = specimen.id === "mecha-princess";
 
   const model = useMemo(() => {
     const cloned = scene.clone(true);
@@ -59,8 +60,8 @@ function GlbAvatar({ specimen }: { specimen: Specimen }) {
 
   return (
     <group ref={groupRef}>
-      <Float floatIntensity={0.72} rotationIntensity={0.24} speed={1.7}>
-        <primitive object={model} position={[0, -0.1, 0]} scale={1.12} />
+      <Float floatIntensity={isMechaPrincess ? 0.28 : 0.72} rotationIntensity={isMechaPrincess ? 0.08 : 0.24} speed={1.7}>
+        <primitive object={model} position={[0, isMechaPrincess ? -0.42 : -0.1, 0]} scale={isMechaPrincess ? 0.86 : 1.12} />
       </Float>
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.55, 0]}>
@@ -73,10 +74,10 @@ function GlbAvatar({ specimen }: { specimen: Specimen }) {
       </mesh>
       <Sparkles
         color={specimen.palette[2]}
-        count={specimen.hologram?.particleCount ?? 96}
-        scale={[4.4, 3.8, 2.4]}
-        size={2.15}
-        speed={0.58}
+        count={isMechaPrincess ? 36 : specimen.hologram?.particleCount ?? 96}
+        scale={isMechaPrincess ? [2.6, 2.8, 1.4] : [4.4, 3.8, 2.4]}
+        size={isMechaPrincess ? 1.15 : 2.15}
+        speed={isMechaPrincess ? 0.32 : 0.58}
       />
       <Text
         color={specimen.palette[2]}
@@ -104,6 +105,8 @@ function StageFallback({ specimen }: { specimen: Specimen }) {
 }
 
 export function HologramStage({ specimen, compact = false }: { specimen: Specimen; compact?: boolean }) {
+  const isMechaPrincess = specimen.id === "mecha-princess";
+
   return (
     <div
       className="relative h-full min-h-[360px] overflow-hidden rounded-md border border-white/10 bg-black"
@@ -111,39 +114,39 @@ export function HologramStage({ specimen, compact = false }: { specimen: Specime
         background: `radial-gradient(circle at 50% 36%, ${specimen.palette[0]}33, transparent 34%), radial-gradient(circle at 20% 70%, ${specimen.palette[1]}24, transparent 28%), #030405`,
       }}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.055)_1px,transparent_1px)] bg-[length:100%_8px] opacity-40" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.055)_1px,transparent_1px)] bg-[length:100%_8px] opacity-25" />
       <div className="pointer-events-none absolute inset-x-8 top-8 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent" />
       <Canvas
-        camera={{ fov: compact ? 42 : 36, position: [0, 0.1, compact ? 5.2 : 4.8] }}
-        dpr={[1, 1.75]}
+        camera={{ fov: isMechaPrincess ? 36 : compact ? 42 : 36, position: [0, isMechaPrincess ? 0.2 : 0.1, isMechaPrincess ? 6.2 : compact ? 5.2 : 4.8] }}
+        dpr={[1.25, 2]}
         gl={{ antialias: true }}
       >
         <color attach="background" args={["#020203"]} />
-        <ambientLight intensity={0.62} />
-        <directionalLight color="#ffffff" intensity={2.1} position={[2.4, 3.2, 3.6]} />
-        <pointLight color={specimen.palette[0]} intensity={42} position={[2.4, 2.4, 2.6]} />
-        <pointLight color={specimen.palette[1]} intensity={26} position={[-2, -0.7, 2.2]} />
+        <ambientLight intensity={isMechaPrincess ? 1.05 : 0.62} />
+        <directionalLight color="#ffffff" intensity={isMechaPrincess ? 3.4 : 2.1} position={[2.4, 3.2, 3.6]} />
+        <pointLight color={specimen.palette[0]} intensity={isMechaPrincess ? 24 : 42} position={[2.4, 2.4, 2.6]} />
+        <pointLight color={specimen.palette[1]} intensity={isMechaPrincess ? 18 : 26} position={[-2, -0.7, 2.2]} />
         <Suspense fallback={<StageFallback specimen={specimen} />}>
           <GlbAvatar specimen={specimen} />
           <Environment preset="city" />
         </Suspense>
         <OrbitControls
           autoRotate
-          autoRotateSpeed={0.36}
+          autoRotateSpeed={isMechaPrincess ? 0.18 : 0.36}
           enablePan={false}
           enableZoom={!compact}
-          maxDistance={6.2}
-          minDistance={3.4}
+          maxDistance={isMechaPrincess ? 7.4 : 6.2}
+          minDistance={isMechaPrincess ? 4.8 : 3.4}
           maxPolarAngle={Math.PI / 1.82}
           minPolarAngle={Math.PI / 3.1}
           rotateSpeed={0.42}
         />
         <EffectComposer>
-          <Bloom intensity={1.45} luminanceThreshold={0.1} mipmapBlur />
-          <ChromaticAberration blendFunction={BlendFunction.SCREEN} offset={[0.0012, 0.0018]} />
-          <Scanline blendFunction={BlendFunction.OVERLAY} density={specimen.hologram?.scanlineDensity ?? 1.25} opacity={0.22} />
-          <Noise blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.16} />
-          <Vignette eskil={false} offset={0.25} darkness={0.72} />
+          <Bloom intensity={isMechaPrincess ? 0.42 : 1.45} luminanceThreshold={isMechaPrincess ? 0.72 : 0.1} mipmapBlur />
+          <ChromaticAberration blendFunction={BlendFunction.SCREEN} offset={isMechaPrincess ? [0.00035, 0.00045] : [0.0012, 0.0018]} />
+          <Scanline blendFunction={BlendFunction.OVERLAY} density={specimen.hologram?.scanlineDensity ?? 1.25} opacity={isMechaPrincess ? 0.07 : 0.22} />
+          <Noise blendFunction={BlendFunction.SOFT_LIGHT} opacity={isMechaPrincess ? 0.05 : 0.16} />
+          <Vignette eskil={false} offset={0.25} darkness={isMechaPrincess ? 0.42 : 0.72} />
         </EffectComposer>
       </Canvas>
       <div className="pointer-events-none absolute bottom-5 left-1/2 h-px w-3/4 -translate-x-1/2 bg-gradient-to-r from-transparent via-cyan-100/70 to-transparent" />
@@ -153,3 +156,4 @@ export function HologramStage({ specimen, compact = false }: { specimen: Specime
 }
 
 useGLTF.preload("/models/if-holo-default.glb");
+useGLTF.preload("/models/mecha-princess.glb");
