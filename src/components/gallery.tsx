@@ -2,7 +2,7 @@
 
 import { Chip, ProgressBar } from "@heroui/react";
 import { Howler } from "howler";
-import { ArrowUpRight, BadgeCheck, Boxes, Radio, Sparkles } from "lucide-react";
+import { ArrowUpRight, Boxes, Radio } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -115,12 +115,6 @@ export function Gallery({ specimens }: { specimens: Specimen[] }) {
             </Link>
           );
         })}
-      </div>
-
-      <div className="mt-10 grid gap-3 border-y border-white/10 py-5 text-sm text-white/54 md:grid-cols-3">
-        <div className="flex items-center gap-2"><BadgeCheck className="h-4 w-4 text-emerald-300" /> 当前原型统一使用 GLB 模型资产</div>
-        <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-fuchsia-300" /> 全息效果叠加在真实 3D 模型之上</div>
-        <div className="flex items-center gap-2"><Boxes className="h-4 w-4 text-cyan-300" /> 后续可替换为独立角色 GLB/VRM</div>
       </div>
     </section>
   );
